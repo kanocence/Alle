@@ -21,7 +21,7 @@
 	},
 	"vars": {
 		"ENABLE_AI_EXTRACT": "true",
-		"EXTRACT_MODEL": "google-ai-studio/gemini-2.5-flash",
+		"EXTRACT_MODEL": "@cf/zai-org/glm-4.7-flash",
 		"ENABLE_AUTO_DEL": "false",
 		"AUTO_DEL_TYPE": "auth_code,auth_link",
 		"AUTO_DEL_TIME": "3600",

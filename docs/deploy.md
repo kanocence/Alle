@@ -107,6 +107,16 @@
 
 这里挑一个模型 [Cloudflare Workers AI 支持的模型](https://developers.cloudflare.com/workers-ai/features/json-mode/#supported-models) 填写 `EXTRACT_MODEL`
 
+默认模型为 `@cf/zai-org/glm-4.7-flash`。此模型使用 Chat Completions 格式，程序会采用对应的 JSON Schema 请求和返回解析，并关闭思考、限制输出至 512 tokens，以减少邮件提取的用量。
+
+Workers AI 免费额度为每日共享 10,000 Neurons，北京时间每天 08:00 重置；实际可处理邮件数取决于邮件长度。参见 [Cloudflare 官方计价](https://developers.cloudflare.com/workers-ai/platform/pricing/)。
+
+已有部署升级时，也需把 GitHub Actions 仓库变量 `EXTRACT_MODEL` 改为上述模型名，否则生成配置时会覆盖本地默认值。部署代码和变量后，再发一封测试验证码邮件，核对日志的 `auth_code` 结果及 Telegram 消息。旧邮件不会自动重新提取。
+
+如果此前设置了 `OPENAI_BASE_URL` 和 `OPENAI_API_KEY`，程序会优先使用该外部接口。决定改用 Workers AI 时，需从 Worker 及 GitHub 部署 Secrets 中移除这两个外部接口配置，避免继续向原接口发送 Cloudflare 模型名；原本未设置这两项的部署无需操作。
+
+本次修复沿用 `main` 的数据库和 Telegram 流程；上游 `v2` 改用了不同的数据结构和 R2 附件存储，需另行规划迁移。
+
 - 自定义模型
 
 需要支持JSON MODE,填写`OPENAI_API_KEY`,`OPENAI_BASE_URL`,`EXTRACT_MODEL`
